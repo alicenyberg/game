@@ -1,37 +1,41 @@
-const app = new PIXI.Application({
-  width: 500,
-  height: 500,
-});
+// Canvas
 
-document.body.appendChild(app.view);
+let app;
 
-const tomato = PIXI.Sprite.from('hello.svg');
-tomato.anchor.set(0.5);
-tomato.x = app.screen.width / 2;
-tomato.y = app.screen.width / 2;
-tomato.width = 100;
-tomato.height = 100;
+window.onload = function () {
+  app = new PIXI.Application({
+    width: 500,
+    height: 500,
+  });
 
-app.stage.addChild(tomato);
+  document.body.appendChild(app.view);
 
-// keys movement
+  // get sprites
 
-let keys = {};
-let keysDiv;
+  app.loader.baseUrl = 'sprites';
+  app.loader.add('tomato', 'hello.svg').add('caterpillar', 'caterpillar.png');
 
-window.addEventListener('keydown', keyDown);
-window.addEventListener('keyup', keyUp);
+  //  check if everything is done loading
 
-app.ticker.add(movement);
+  app.loader.onComplete.add(doneLoading);
+  app.loader.load();
+};
 
-function keyDown(e) {
-  keys[e.keyCode] = true;
-}
-function keyUp(e) {
-  keys[e.keyCode] = false;
+// When everything is done loading, start game (more or less)
+
+function doneLoading() {
+  createMonster();
+  createPlayer();
+  app.ticker.add(gameLoop);
 }
 
-function movement() {
+// Gameloop
+
+function gameLoop() {
+  caterpillar.move();
+
+  // Player movement
+
   if (keys['37']) {
     tomato.x -= 5;
   }
@@ -44,4 +48,97 @@ function movement() {
   if (keys['40']) {
     tomato.y += 5;
   }
+}
+
+// Player
+
+let tomato;
+
+// Player class
+
+class Player extends PIXI.Sprite {
+  constructor(x = 0, y = 0, width, height, texture, name = 'none') {
+    super(texture);
+    this.anchor.set(0.5);
+    this.name = name;
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
+}
+
+// create player from class, and add to canvas
+
+function createPlayer() {
+  tomato = new Player(
+    300,
+    300,
+    100,
+    100,
+    app.loader.resources['tomato'].texture,
+    'mr Tomato'
+  );
+
+  // add player to canvas
+
+  app.stage.addChild(tomato);
+}
+
+// Player movement, listen for keypress
+
+function keyDown(e) {
+  keys[e.keyCode] = true;
+}
+function keyUp(e) {
+  keys[e.keyCode] = false;
+}
+
+let keys = {};
+
+window.addEventListener('keydown', keyDown);
+window.addEventListener('keyup', keyUp);
+
+// Monster
+
+let caterpillar;
+
+class Monster extends PIXI.Sprite {
+  constructor(x = 0, y = 0, width, height, texture, name = 'none', speed = 5) {
+    super(texture);
+    this.anchor.set(0.5);
+    this.name = name;
+    this.speed = speed;
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
+
+  // monster movement
+
+  move() {
+    this.x = this.x + this.speed;
+    if (this.x > app.view.width - this.width / 2 || this.x < this.width / 2) {
+      this.speed = -this.speed;
+    }
+  }
+}
+
+// create monster from class, and add to canvas
+
+function createMonster() {
+  caterpillar = new Monster(
+    100,
+    100,
+    50,
+    50,
+    app.loader.resources['caterpillar'].texture,
+    'Wormy',
+    3
+  );
+
+  // add monster to canvas
+
+  app.stage.addChild(caterpillar);
 }
