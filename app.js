@@ -36,17 +36,14 @@ function doneLoading() {
   app.ticker.add(gameLoop);
 }
 
-function newGame() {
-  if (createMonster()) {
-    createCanvas();
-  }
-  if (createPlayer()) {
-    createCanvas();
-  }
-  if (createFood()) {
-    createCanvas();
-  }
-}
+// function newGame() {
+//   if (createMonster()) {
+//   }
+//   if (createPlayer()) {
+//   }
+//   if (createFood()) {
+//   }
+// }
 
 // Gameloop
 
@@ -78,7 +75,7 @@ function gameLoop() {
     // app.ticker.remove(gameLoop());
     // gamla bilden blir kvar och allt går snabbare och snabbare
     // doneLoading();
-    newGame();
+    // newGame();
   }
 
   if (collision(tomato, scarecrow)) {
@@ -93,12 +90,12 @@ function gameLoop() {
   if (collectPoints(tomato, raindrop)) {
     points++;
     console.log(points);
-    raindrop.x = (Math.random() * app.screen.width) / 2;
-    raindrop.y = (Math.random() * app.screen.height) / 2;
+    raindrop.x = Math.random() * app.screen.width;
+    raindrop.y = Math.random() * app.screen.height;
   }
   if (collectPoints(tomato, sun)) {
-    sun.x = (Math.random() * app.screen.width) / 2;
-    sun.y = (Math.random() * app.screen.height) / 2;
+    sun.x = Math.random() * app.screen.width;
+    sun.y = Math.random() * app.screen.height;
     points++;
     console.log(points);
   }
