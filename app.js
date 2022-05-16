@@ -2,7 +2,7 @@
 
 let app;
 
-window.onload = function () {
+window.onload = function createCanvas() {
   app = new PIXI.Application({
     width: 500,
     height: 500,
@@ -18,7 +18,8 @@ window.onload = function () {
     .add('caterpillar', 'caterpillar.png')
     .add('raindrop', 'raindrop.svg')
     .add('sun', 'sun.svg')
-    .add('scarecrow', 'scarecrow.svg');
+    .add('scarecrow', 'scarecrow.svg')
+    .add('tomat', 'mini-tomato.svg');
 
   //  check if everything is done loading
 
@@ -33,6 +34,18 @@ function doneLoading() {
   createPlayer();
   createFood();
   app.ticker.add(gameLoop);
+}
+
+function newGame() {
+  if (createMonster()) {
+    createCanvas();
+  }
+  if (createPlayer()) {
+    createCanvas();
+  }
+  if (createFood()) {
+    createCanvas();
+  }
 }
 
 // Gameloop
@@ -56,6 +69,8 @@ function gameLoop() {
     tomato.y += 5;
   }
 
+  let points = 0;
+
   if (collision(tomato, caterpillar)) {
     console.log('game over!');
     // "Funkar" men fullösning. Tar dessutom bort console logen. vilket knaske ändå är okej om det ska innebära game over
@@ -63,6 +78,7 @@ function gameLoop() {
     // app.ticker.remove(gameLoop());
     // gamla bilden blir kvar och allt går snabbare och snabbare
     // doneLoading();
+    newGame();
   }
 
   if (collision(tomato, scarecrow)) {
@@ -75,10 +91,16 @@ function gameLoop() {
   }
 
   if (collectPoints(tomato, raindrop)) {
-    console.log('You get a point!');
+    points++;
+    console.log(points);
+    raindrop.x = (Math.random() * app.screen.width) / 2;
+    raindrop.y = (Math.random() * app.screen.height) / 2;
   }
   if (collectPoints(tomato, sun)) {
-    console.log('You get a point!');
+    sun.x = (Math.random() * app.screen.width) / 2;
+    sun.y = (Math.random() * app.screen.height) / 2;
+    points++;
+    console.log(points);
   }
 }
 
@@ -225,14 +247,20 @@ class Food extends PIXI.Sprite {
 
 function createFood() {
   raindrop = new Food(
-    150,
-    150,
+    (Math.random() * app.screen.width) / 2,
+    (Math.random() * app.screen.height) / 2,
     50,
     50,
     app.loader.resources['raindrop'].texture
   );
 
-  sun = new Food(400, 400, 50, 50, app.loader.resources['sun'].texture);
+  sun = new Food(
+    (Math.random() * app.screen.width) / 2,
+    (Math.random() * app.screen.height) / 2,
+    50,
+    50,
+    app.loader.resources['sun'].texture
+  );
 
   app.stage.addChild(raindrop, sun);
 }
