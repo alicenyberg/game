@@ -13,7 +13,12 @@ window.onload = function () {
   // get sprites
 
   app.loader.baseUrl = 'sprites';
-  app.loader.add('tomato', 'hello.svg').add('caterpillar', 'caterpillar.png');
+  app.loader
+    .add('tomato', 'hello.svg')
+    .add('caterpillar', 'caterpillar.png')
+    .add('raindrop', 'raindrop.svg')
+    .add('sun', 'sun.svg')
+    .add('scarecrow', 'scarecrow.svg');
 
   //  check if everything is done loading
 
@@ -26,6 +31,7 @@ window.onload = function () {
 function doneLoading() {
   createMonster();
   createPlayer();
+  createFood();
   app.ticker.add(gameLoop);
 }
 
@@ -33,6 +39,7 @@ function doneLoading() {
 
 function gameLoop() {
   caterpillar.move();
+  scarecrow.move();
 
   // Player movement
 
@@ -48,6 +55,45 @@ function gameLoop() {
   if (keys['40']) {
     tomato.y += 5;
   }
+
+  if (collision(tomato, caterpillar)) {
+    console.log('game over!');
+    // "Funkar" men fullösning. Tar dessutom bort console logen. vilket knaske ändå är okej om det ska innebära game over
+    // location.reload();
+    // app.ticker.remove(gameLoop());
+    // gamla bilden blir kvar och allt går snabbare och snabbare
+    // doneLoading();
+  }
+
+  if (collision(tomato, scarecrow)) {
+    console.log('game over!');
+    // "Funkar" men fullösning. Tar dessutom bort console logen. vilket knaske ändå är okej om det ska innebära game over
+    // location.reload();
+    // app.ticker.remove(gameLoop());
+    // gamla bilden blir kvar och allt går snabbare och snabbare
+    // doneLoading();
+  }
+
+  if (collectPoints(tomato, raindrop)) {
+    console.log('You get a point!');
+  }
+  if (collectPoints(tomato, sun)) {
+    console.log('You get a point!');
+  }
+}
+
+// Collision function
+
+function collision(a, b) {
+  let player = a.getBounds();
+  let enemy = b.getBounds();
+
+  return (
+    player.x + player.width > enemy.x &&
+    player.x < enemy.x + enemy.width &&
+    player.y + enemy.height > enemy.y &&
+    player.y < enemy.y + enemy.height
+  );
 }
 
 // Player
@@ -72,11 +118,15 @@ class Player extends PIXI.Sprite {
 
 function createPlayer() {
   tomato = new Player(
-    300,
-    300,
+    // players position on the canvas
+    250,
+    250,
+    // player size
     100,
     100,
+    // load the image
     app.loader.resources['tomato'].texture,
+    // name of the figure
     'mr Tomato'
   );
 
@@ -102,6 +152,8 @@ window.addEventListener('keyup', keyUp);
 // Monster
 
 let caterpillar;
+
+// Monster class
 
 class Monster extends PIXI.Sprite {
   constructor(x = 0, y = 0, width, height, texture, name = 'none', speed = 5) {
@@ -129,16 +181,72 @@ class Monster extends PIXI.Sprite {
 
 function createMonster() {
   caterpillar = new Monster(
+    // placement on the canvas
     100,
     100,
+    // size of the monster
     50,
     50,
+    // image
     app.loader.resources['caterpillar'].texture,
+    // name
     'Wormy',
+    // speed
     3
+  );
+
+  scarecrow = new Monster(
+    400,
+    400,
+    100,
+    100,
+    app.loader.resources['scarecrow'].texture,
+    'scary',
+    5
   );
 
   // add monster to canvas
 
-  app.stage.addChild(caterpillar);
+  app.stage.addChild(caterpillar, scarecrow);
+}
+
+// Food/points
+
+class Food extends PIXI.Sprite {
+  constructor(x = 0, y = 0, width, height, texture) {
+    super(texture);
+    this.anchor.set(0.5);
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
+}
+
+function createFood() {
+  raindrop = new Food(
+    150,
+    150,
+    50,
+    50,
+    app.loader.resources['raindrop'].texture
+  );
+
+  sun = new Food(400, 400, 50, 50, app.loader.resources['sun'].texture);
+
+  app.stage.addChild(raindrop, sun);
+}
+
+// function to collect points
+
+function collectPoints(a, b) {
+  let player = a.getBounds();
+  let food = b.getBounds();
+
+  return (
+    player.x + player.width > food.x &&
+    player.x < food.x + food.width &&
+    player.y + food.height > food.y &&
+    player.y < food.y + food.height
+  );
 }
