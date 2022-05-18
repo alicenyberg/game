@@ -134,6 +134,22 @@ function gameLoop() {
     endScreen.visible = true;
     gameScreen.visible = false;
   }
+  if (collectPoints(tomato, raindrop)) {
+    gameScreen.removeChild(scoreBoard);
+    score++;
+    drawScore();
+    console.log(score);
+    raindrop.x = Math.random() * app.screen.width;
+    raindrop.y = Math.random() * app.screen.height;
+  }
+  if (collectPoints(tomato, sun)) {
+    gameScreen.removeChild(scoreBoard);
+    score++;
+    drawScore();
+    console.log(score);
+    sun.x = Math.random() * app.screen.width;
+    sun.y = Math.random() * app.screen.height;
+  }
 }
 
 // Collision function
@@ -294,4 +310,36 @@ function createFood() {
   );
 
   gameScreen.addChild(raindrop, sun);
+}
+
+// scoreboard
+
+let scoreboard;
+let score = 0;
+
+function drawScore() {
+  const style = new PIXI.TextStyle({
+    fontFamily: 'Roboto',
+    fill: ['#000000'],
+    fontSize: 43,
+  });
+
+  scoreBoard = new PIXI.Text(score, style);
+  gameScreen.addChild(scoreBoard);
+}
+
+drawScore();
+
+// function to collect points
+
+function collectPoints(a, b) {
+  let player = a.getBounds();
+  let food = b.getBounds();
+
+  return (
+    player.x + player.width > food.x &&
+    player.x < food.x + food.width &&
+    player.y + food.height > food.y &&
+    player.y < food.y + food.height
+  );
 }
