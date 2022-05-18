@@ -31,16 +31,21 @@ gameScreen.addChild(backgroundImage);
 
 // scoreboard
 
-const style = new PIXI.TextStyle({
-  fontFamily: 'Roboto',
-  fill: ['#000000'],
-  fontSize: 43,
-});
+let scoreboard;
+let score = 0;
 
-let score = '0';
-score = new PIXI.Text(score, style);
+function drawScore() {
+  const style = new PIXI.TextStyle({
+    fontFamily: 'Roboto',
+    fill: ['#000000'],
+    fontSize: 43,
+  });
 
-gameScreen.addChild(score);
+  scoreBoard = new PIXI.Text(score, style);
+  gameScreen.addChild(scoreBoard);
+}
+
+drawScore();
 
 // game over container
 
@@ -149,14 +154,14 @@ function gameLoop() {
   }
 
   if (collectPoints(tomato, raindrop)) {
-    // har ej tillgång till variabeln score
     score++;
+    drawScore();
     console.log(score);
     raindrop.x = Math.random() * app.screen.width;
     raindrop.y = Math.random() * app.screen.height;
   }
   if (collectPoints(tomato, sun)) {
-    // har ej tillgång till variabeln score
+    drawScore();
     score++;
     console.log(score);
     sun.x = Math.random() * app.screen.width;
@@ -194,8 +199,8 @@ class Player extends PIXI.Sprite {
     this.width = width;
     this.height = height;
   }
-  // create player from class, and add to canvas
 }
+// create player from class, and add to canvas
 function createPlayer() {
   tomato = new Player(
     // players position on the canvas
