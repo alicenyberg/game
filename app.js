@@ -144,8 +144,8 @@ function gameLoop() {
   }
   if (collectPoints(tomato, sun)) {
     gameScreen.removeChild(scoreBoard);
-    drawScore();
     score++;
+    drawScore();
     console.log(score);
     sun.x = Math.random() * app.screen.width;
     sun.y = Math.random() * app.screen.height;
