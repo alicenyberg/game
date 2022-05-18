@@ -1,31 +1,110 @@
 // Canvas
 
-let app;
+// detta vill vi ha i en klass istället?
 
-window.onload = function createCanvas() {
-  app = new PIXI.Application({
-    width: 500,
-    height: 500,
-  });
+// window.onload = function createCanvas() {
+let app = new PIXI.Application({
+  width: 500,
+  height: 500,
+});
 
-  document.body.appendChild(app.view);
+document.body.appendChild(app.view);
 
-  // get sprites
+// add container game screen
 
-  app.loader.baseUrl = 'sprites';
-  app.loader
-    .add('tomato', 'hello.svg')
-    .add('caterpillar', 'caterpillar.png')
-    .add('raindrop', 'raindrop.svg')
-    .add('sun', 'sun.svg')
-    .add('scarecrow', 'scarecrow.svg')
-    .add('tomat', 'mini-tomato.svg');
+gameScreen = new PIXI.Container();
+gameScreen.visible = true;
+app.stage.addChild(gameScreen);
 
-  //  check if everything is done loading
+let gameRect = new PIXI.Graphics();
+gameRect.drawRect(0, 0, app.view.width, app.view.height);
+gameScreen.addChild(gameRect);
 
-  app.loader.onComplete.add(doneLoading);
-  app.loader.load();
-};
+// add background image to gameScreen
+
+let backgroundImage = PIXI.Sprite.from('/sprites/frog.jpeg');
+backgroundImage.width = app.view.width;
+backgroundImage.height = app.view.height;
+backgroundImage.x = 0;
+backgroundImage.y = 0;
+gameScreen.addChild(backgroundImage);
+
+// scoreboard
+
+const style = new PIXI.TextStyle({
+  fontFamily: 'Roboto',
+  fill: ['#000000'],
+  fontSize: 43,
+});
+
+let score = '0';
+score = new PIXI.Text(score, style);
+
+gameScreen.addChild(score);
+
+// game over container
+
+endScreen = new PIXI.Container();
+endScreen.visible = false;
+app.stage.addChild(endScreen);
+
+let endRect = new PIXI.Graphics();
+endRect.beginFill(0xff0000);
+endRect.drawRect(0, 0, app.view.width, app.view.height);
+endScreen.addChild(endRect);
+
+let gameOverText = new PIXI.Text('Game Over');
+gameOverText.anchor.set(0.5);
+gameOverText.x = app.view.width / 2;
+gameOverText.y = app.view.height / 2;
+gameOverText.style = new PIXI.TextStyle({
+  fontSize: 40,
+  fontStyle: 'bold',
+});
+endScreen.addChild(gameOverText);
+
+// play again text
+
+let playAgainText = new PIXI.Text('Play Again?');
+playAgainText.anchor.set(0.5);
+playAgainText.x = app.view.width / 2;
+playAgainText.y = app.view.height / 3;
+endScreen.addChild(playAgainText);
+
+// play again button
+
+let playAgain = new PIXI.Sprite.from('/sprites/sun.svg');
+playAgain.anchor.set(0.5);
+playAgain.x = app.view.width / 2;
+playAgain.y = app.view.height / 5;
+playAgain.buttonMode = true;
+playAgain.interactive = true;
+playAgain.on('click', onClick);
+endScreen.addChild(playAgain);
+
+function onClick() {
+  location.reload();
+}
+
+// endScreen.addChild(button);
+
+// put in loader
+// get sprites
+
+app.loader.baseUrl = 'sprites';
+app.loader
+  .add('tomato', 'hello.svg')
+  .add('caterpillar', 'caterpillar.png')
+  .add('raindrop', 'raindrop.svg')
+  .add('sun', 'sun.svg')
+  .add('scarecrow', 'scarecrow.svg')
+  .add('tomat', 'mini-tomato.svg');
+
+//  check if everything is done loading
+
+app.loader.onComplete.add(doneLoading);
+app.loader.load();
+// };
 
 // When everything is done loading, start game (more or less)
 
@@ -36,14 +115,7 @@ function doneLoading() {
   app.ticker.add(gameLoop);
 }
 
-// function newGame() {
-//   if (createMonster()) {
-//   }
-//   if (createPlayer()) {
-//   }
-//   if (createFood()) {
-//   }
-// }
+function resetGame() {}
 
 // Gameloop
 
@@ -66,38 +138,29 @@ function gameLoop() {
     tomato.y += 5;
   }
 
-  let points = 0;
-
   if (collision(tomato, caterpillar)) {
-    console.log('game over!');
-    // "Funkar" men fullösning. Tar dessutom bort console logen. vilket knaske ändå är okej om det ska innebära game over
-    // location.reload();
-    // app.ticker.remove(gameLoop());
-    // gamla bilden blir kvar och allt går snabbare och snabbare
-    // doneLoading();
-    // newGame();
+    endScreen.visible = true;
+    gameScreen.visible = false;
   }
 
   if (collision(tomato, scarecrow)) {
-    console.log('game over!');
-    // "Funkar" men fullösning. Tar dessutom bort console logen. vilket knaske ändå är okej om det ska innebära game over
-    // location.reload();
-    // app.ticker.remove(gameLoop());
-    // gamla bilden blir kvar och allt går snabbare och snabbare
-    // doneLoading();
+    endScreen.visible = true;
+    gameScreen.visible = false;
   }
 
   if (collectPoints(tomato, raindrop)) {
-    points++;
-    console.log(points);
+    // har ej tillgång till variabeln score
+    score++;
+    console.log(score);
     raindrop.x = Math.random() * app.screen.width;
     raindrop.y = Math.random() * app.screen.height;
   }
   if (collectPoints(tomato, sun)) {
+    // har ej tillgång till variabeln score
+    score++;
+    console.log(score);
     sun.x = Math.random() * app.screen.width;
     sun.y = Math.random() * app.screen.height;
-    points++;
-    console.log(points);
   }
 }
 
@@ -131,10 +194,8 @@ class Player extends PIXI.Sprite {
     this.width = width;
     this.height = height;
   }
+  // create player from class, and add to canvas
 }
-
-// create player from class, and add to canvas
-
 function createPlayer() {
   tomato = new Player(
     // players position on the canvas
@@ -151,7 +212,8 @@ function createPlayer() {
 
   // add player to canvas
 
-  app.stage.addChild(tomato);
+  // app.stage.addChild(tomato);
+  gameScreen.addChild(tomato);
 }
 
 // Player movement, listen for keypress
@@ -226,7 +288,7 @@ function createMonster() {
 
   // add monster to canvas
 
-  app.stage.addChild(caterpillar, scarecrow);
+  gameScreen.addChild(caterpillar, scarecrow);
 }
 
 // Food/points
@@ -259,7 +321,7 @@ function createFood() {
     app.loader.resources['sun'].texture
   );
 
-  app.stage.addChild(raindrop, sun);
+  gameScreen.addChild(raindrop, sun);
 }
 
 // function to collect points
