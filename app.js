@@ -4,8 +4,8 @@
 
 // window.onload = function createCanvas() {
 let app = new PIXI.Application({
-  width: 500,
-  height: 500,
+  width: 1000,
+  height: 800,
 });
 
 document.body.appendChild(app.view);
@@ -22,7 +22,7 @@ gameScreen.addChild(gameRect);
 
 // add background image to gameScreen
 
-let backgroundImage = PIXI.Sprite.from('/sprites/frog.jpeg');
+let backgroundImage = PIXI.Sprite.from('/sprites/background.svg');
 backgroundImage.width = app.view.width;
 backgroundImage.height = app.view.height;
 backgroundImage.x = 0;
@@ -36,34 +36,35 @@ endScreen.visible = false;
 app.stage.addChild(endScreen);
 
 let endRect = new PIXI.Graphics();
-endRect.beginFill(0xff0000);
+endRect.beginFill(000000);
 endRect.drawRect(0, 0, app.view.width, app.view.height);
 endScreen.addChild(endRect);
 
 let gameOverText = new PIXI.Text('Game Over');
 gameOverText.anchor.set(0.5);
-gameOverText.x = app.view.width / 2;
-gameOverText.y = app.view.height / 2;
+gameOverText.x = app.view.width / 3;
+gameOverText.y = app.view.height / 5;
 gameOverText.style = new PIXI.TextStyle({
   fontSize: 40,
   fontStyle: 'bold',
+  color: '#FFFFFF',
 });
 endScreen.addChild(gameOverText);
 
 // play again text
 
-let playAgainText = new PIXI.Text('Play Again?');
-playAgainText.anchor.set(0.5);
-playAgainText.x = app.view.width / 2;
-playAgainText.y = app.view.height / 3;
-endScreen.addChild(playAgainText);
+// let playAgainText = new PIXI.Text('Play Again?');
+// playAgainText.anchor.set(0.5);
+// playAgainText.x = app.view.width / 2;
+// playAgainText.y = app.view.height / 3;
+// endScreen.addChild(playAgainText);
 
 // play again button
 
-let playAgain = new PIXI.Sprite.from('/sprites/sun.svg');
+let playAgain = new PIXI.Sprite.from('/sprites/button.svg');
 playAgain.anchor.set(0.5);
 playAgain.x = app.view.width / 2;
-playAgain.y = app.view.height / 5;
+playAgain.y = app.view.height / 2;
 playAgain.buttonMode = true;
 playAgain.interactive = true;
 playAgain.on('click', onClick);
@@ -80,7 +81,7 @@ function onClick() {
 
 app.loader.baseUrl = 'sprites';
 app.loader
-  .add('tomato', 'hello.svg')
+  .add('tomato', 'tomato.svg')
   .add('caterpillar', 'caterpillar.png')
   .add('raindrop', 'raindrop.svg')
   .add('sun', 'sun.svg')
@@ -297,15 +298,15 @@ function createFood() {
     (Math.random() * app.screen.width) / 2,
     (Math.random() * app.screen.height) / 2,
     50,
-    50,
+    80,
     app.loader.resources['raindrop'].texture
   );
 
   sun = new Food(
     (Math.random() * app.screen.width) / 2,
     (Math.random() * app.screen.height) / 2,
-    50,
-    50,
+    80,
+    80,
     app.loader.resources['sun'].texture
   );
 
