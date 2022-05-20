@@ -1,3 +1,7 @@
+import Player from './player.js';
+import Monster from './monster.js';
+import Food from './food.js';
+import './functions.js';
 // Canvas
 
 // detta vill vi ha i en klass istället?
@@ -12,7 +16,7 @@ document.body.appendChild(app.view);
 
 // add container game screen
 
-gameScreen = new PIXI.Container();
+let gameScreen = new PIXI.Container();
 gameScreen.visible = true;
 app.stage.addChild(gameScreen);
 
@@ -31,7 +35,7 @@ gameScreen.addChild(backgroundImage);
 
 // game over container
 
-endScreen = new PIXI.Container();
+let endScreen = new PIXI.Container();
 endScreen.visible = false;
 app.stage.addChild(endScreen);
 
@@ -102,13 +106,15 @@ function doneLoading() {
   app.ticker.add(gameLoop);
 }
 
-function resetGame() {}
+// function resetGame() {}
 
 // Gameloop
 
 function gameLoop() {
-  caterpillar.move();
-  scarecrow.move();
+  // caterpillar.move();
+  // scarecrow.move();
+  monsterMove(caterpillar);
+  monsterMove(scarecrow);
 
   // Player movement
 
@@ -170,19 +176,6 @@ function collision(a, b) {
 
 let tomato;
 
-// Player class
-
-class Player extends PIXI.Sprite {
-  constructor(x = 0, y = 0, width, height, texture, name = 'none') {
-    super(texture);
-    this.anchor.set(0.5);
-    this.name = name;
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-  }
-}
 // create player from class, and add to canvas
 function createPlayer() {
   tomato = new Player(
@@ -221,30 +214,7 @@ window.addEventListener('keyup', keyUp);
 // Monster
 
 let caterpillar;
-
-// Monster class
-
-class Monster extends PIXI.Sprite {
-  constructor(x = 0, y = 0, width, height, texture, name = 'none', speed = 5) {
-    super(texture);
-    this.anchor.set(0.5);
-    this.name = name;
-    this.speed = speed;
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-  }
-
-  // monster movement
-
-  move() {
-    this.x = this.x + this.speed;
-    if (this.x > app.view.width - this.width / 2 || this.x < this.width / 2) {
-      this.speed = -this.speed;
-    }
-  }
-}
+let scarecrow;
 
 // create monster from class, and add to canvas
 
@@ -279,18 +249,18 @@ function createMonster() {
   gameScreen.addChild(caterpillar, scarecrow);
 }
 
-// Food/points
-
-class Food extends PIXI.Sprite {
-  constructor(x = 0, y = 0, width, height, texture) {
-    super(texture);
-    this.anchor.set(0.5);
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
+function monsterMove(monster) {
+  monster.x = monster.x + monster.speed;
+  if (
+    monster.x > app.view.width - monster.width / 2 ||
+    monster.x < monster.width / 2
+  ) {
+    monster.speed = -monster.speed;
   }
 }
+
+let raindrop;
+let sun;
 
 function createFood() {
   raindrop = new Food(
@@ -314,7 +284,7 @@ function createFood() {
 
 // scoreboard
 
-let scoreboard;
+// let scoreboard;
 let score = 0;
 
 function drawScore() {
@@ -324,7 +294,7 @@ function drawScore() {
     fontSize: 43,
   });
 
-  scoreBoard = new PIXI.Text(score, style);
+  let scoreBoard = new PIXI.Text(score, style);
   gameScreen.addChild(scoreBoard);
 }
 
