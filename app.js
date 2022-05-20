@@ -40,16 +40,16 @@ endRect.beginFill(000000);
 endRect.drawRect(0, 0, app.view.width, app.view.height);
 endScreen.addChild(endRect);
 
-let gameOverText = new PIXI.Text('Game Over');
-gameOverText.anchor.set(0.5);
-gameOverText.x = app.view.width / 3;
-gameOverText.y = app.view.height / 5;
-gameOverText.style = new PIXI.TextStyle({
-  fontSize: 40,
-  fontStyle: 'bold',
-  color: '#FFFFFF',
-});
-endScreen.addChild(gameOverText);
+// let gameOverText = new PIXI.Text('Game Over');
+// gameOverText.anchor.set(0.5);
+// gameOverText.x = app.view.width / 3;
+// gameOverText.y = app.view.height / 5;
+// gameOverText.style = new PIXI.TextStyle({
+//   fontSize: 40,
+//   fontStyle: 'bold',
+//   color: '#FFFFFF',
+// });
+// endScreen.addChild(gameOverText);
 
 // play again text
 
@@ -60,6 +60,13 @@ endScreen.addChild(gameOverText);
 // endScreen.addChild(playAgainText);
 
 // play again button
+
+let gameOverImage = PIXI.Sprite.from('/sprites/background.svg');
+gameOverImage.width = app.view.width;
+gameOverImage.height = app.view.height;
+gameOverImage.x = 0;
+gameOverImage.y = 0;
+endScreen.addChild(gameOverImage);
 
 let playAgain = new PIXI.Sprite.from('/sprites/button.svg');
 playAgain.anchor.set(0.5);
