@@ -4,8 +4,8 @@
 
 // window.onload = function createCanvas() {
 let app = new PIXI.Application({
-  width: 500,
-  height: 500,
+  width: 1000,
+  height: 800,
 });
 
 document.body.appendChild(app.view);
@@ -22,7 +22,7 @@ gameScreen.addChild(gameRect);
 
 // add background image to gameScreen
 
-let backgroundImage = PIXI.Sprite.from('/sprites/frog.jpeg');
+let backgroundImage = PIXI.Sprite.from('/sprites/background.svg');
 backgroundImage.width = app.view.width;
 backgroundImage.height = app.view.height;
 backgroundImage.x = 0;
@@ -36,34 +36,42 @@ endScreen.visible = false;
 app.stage.addChild(endScreen);
 
 let endRect = new PIXI.Graphics();
-endRect.beginFill(0xff0000);
+endRect.beginFill(000000);
 endRect.drawRect(0, 0, app.view.width, app.view.height);
 endScreen.addChild(endRect);
 
-let gameOverText = new PIXI.Text('Game Over');
-gameOverText.anchor.set(0.5);
-gameOverText.x = app.view.width / 2;
-gameOverText.y = app.view.height / 2;
-gameOverText.style = new PIXI.TextStyle({
-  fontSize: 40,
-  fontStyle: 'bold',
-});
-endScreen.addChild(gameOverText);
+// let gameOverText = new PIXI.Text('Game Over');
+// gameOverText.anchor.set(0.5);
+// gameOverText.x = app.view.width / 3;
+// gameOverText.y = app.view.height / 5;
+// gameOverText.style = new PIXI.TextStyle({
+//   fontSize: 40,
+//   fontStyle: 'bold',
+//   color: '#FFFFFF',
+// });
+// endScreen.addChild(gameOverText);
 
 // play again text
 
-let playAgainText = new PIXI.Text('Play Again?');
-playAgainText.anchor.set(0.5);
-playAgainText.x = app.view.width / 2;
-playAgainText.y = app.view.height / 3;
-endScreen.addChild(playAgainText);
+// let playAgainText = new PIXI.Text('Play Again?');
+// playAgainText.anchor.set(0.5);
+// playAgainText.x = app.view.width / 2;
+// playAgainText.y = app.view.height / 3;
+// endScreen.addChild(playAgainText);
 
 // play again button
 
-let playAgain = new PIXI.Sprite.from('/sprites/sun.svg');
+let gameOverImage = PIXI.Sprite.from('/sprites/background.svg');
+gameOverImage.width = app.view.width;
+gameOverImage.height = app.view.height;
+gameOverImage.x = 0;
+gameOverImage.y = 0;
+endScreen.addChild(gameOverImage);
+
+let playAgain = new PIXI.Sprite.from('/sprites/button.svg');
 playAgain.anchor.set(0.5);
 playAgain.x = app.view.width / 2;
-playAgain.y = app.view.height / 5;
+playAgain.y = app.view.height / 2;
 playAgain.buttonMode = true;
 playAgain.interactive = true;
 playAgain.on('click', onClick);
@@ -80,8 +88,8 @@ function onClick() {
 
 app.loader.baseUrl = 'sprites';
 app.loader
-  .add('tomato', 'hello.svg')
-  .add('caterpillar', 'caterpillar.png')
+  .add('tomato', 'tomato.svg')
+  .add('caterpillar', 'caterpillar.svg')
   .add('raindrop', 'raindrop.svg')
   .add('sun', 'sun.svg')
   .add('scarecrow', 'scarecrow.svg')
@@ -190,8 +198,8 @@ function createPlayer() {
     250,
     250,
     // player size
-    100,
-    100,
+    120,
+    120,
     // load the image
     app.loader.resources['tomato'].texture,
     // name of the figure
@@ -254,24 +262,24 @@ function createMonster() {
     100,
     100,
     // size of the monster
-    50,
-    50,
+    150,
+    100,
     // image
     app.loader.resources['caterpillar'].texture,
     // name
     'Wormy',
     // speed
-    3
+    4.5
   );
 
   scarecrow = new Monster(
     400,
     400,
-    100,
+    130,
     100,
     app.loader.resources['scarecrow'].texture,
     'scary',
-    5
+    4
   );
 
   // add monster to canvas
@@ -297,15 +305,15 @@ function createFood() {
     (Math.random() * app.screen.width) / 2,
     (Math.random() * app.screen.height) / 2,
     50,
-    50,
+    80,
     app.loader.resources['raindrop'].texture
   );
 
   sun = new Food(
     (Math.random() * app.screen.width) / 2,
     (Math.random() * app.screen.height) / 2,
-    50,
-    50,
+    100,
+    100,
     app.loader.resources['sun'].texture
   );
 
