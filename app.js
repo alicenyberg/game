@@ -82,7 +82,7 @@ function onClick() {
 app.loader.baseUrl = 'sprites';
 app.loader
   .add('tomato', 'tomato.svg')
-  .add('caterpillar', 'caterpillar.png')
+  .add('caterpillar', 'caterpillar.svg')
   .add('raindrop', 'raindrop.svg')
   .add('sun', 'sun.svg')
   .add('scarecrow', 'scarecrow.svg')
@@ -191,8 +191,8 @@ function createPlayer() {
     250,
     250,
     // player size
-    100,
-    100,
+    120,
+    120,
     // load the image
     app.loader.resources['tomato'].texture,
     // name of the figure
@@ -255,24 +255,24 @@ function createMonster() {
     100,
     100,
     // size of the monster
-    50,
-    50,
+    150,
+    100,
     // image
     app.loader.resources['caterpillar'].texture,
     // name
     'Wormy',
     // speed
-    3
+    4.5
   );
 
   scarecrow = new Monster(
     400,
     400,
-    100,
+    130,
     100,
     app.loader.resources['scarecrow'].texture,
     'scary',
-    5
+    4
   );
 
   // add monster to canvas
@@ -305,8 +305,8 @@ function createFood() {
   sun = new Food(
     (Math.random() * app.screen.width) / 2,
     (Math.random() * app.screen.height) / 2,
-    80,
-    80,
+    100,
+    100,
     app.loader.resources['sun'].texture
   );
 
