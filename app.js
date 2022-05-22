@@ -133,14 +133,14 @@ function walls() {
     }
   }
   // wall to the right
-  else if (tomato.x > 500 - tomato.width / 2 || tomato.x < tomato.width / 2) {
+  else if (tomato.x > 1000 - tomato.width / 2 || tomato.x < tomato.width / 2) {
     console.log('outside');
     if (keys['39']) {
       keys['39'] = null;
     }
   }
   // wall to the down
-  else if (tomato.y > 500 - tomato.height / 2 || tomato.x < tomato.height / 2) {
+  else if (tomato.y > 800 - tomato.height / 2 || tomato.x < tomato.height / 2) {
     console.log('outside');
     if (keys['40']) {
       keys['40'] = null;
