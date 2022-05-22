@@ -153,6 +153,7 @@ function walls() {
 function gameLoop() {
   caterpillar.move();
   scarecrow.move();
+  walls();
 
   // Player movement
 
