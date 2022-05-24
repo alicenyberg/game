@@ -112,11 +112,48 @@ function doneLoading() {
 
 function resetGame() {}
 
+// Function walls around game screen
+
+function walls() {
+  // wall to the left
+  if (tomato.x < app.width - tomato.width / 2 || tomato.x < tomato.width / 2) {
+    console.log('outside');
+    if (keys['37']) {
+      keys['37'] = null;
+    }
+  }
+  // wall to the top
+  else if (
+    tomato.y < app.height - tomato.height / 2 ||
+    tomato.y < tomato.height / 2
+  ) {
+    console.log('outside');
+    if (keys['38']) {
+      keys['38'] = null;
+    }
+  }
+  // wall to the right
+  else if (tomato.x > 500 - tomato.width / 2 || tomato.x < tomato.width / 2) {
+    console.log('outside');
+    if (keys['39']) {
+      keys['39'] = null;
+    }
+  }
+  // wall to the down
+  else if (tomato.y > 500 - tomato.height / 2 || tomato.x < tomato.height / 2) {
+    console.log('outside');
+    if (keys['40']) {
+      keys['40'] = null;
+    }
+  }
+}
+
 // Gameloop
 
 function gameLoop() {
   caterpillar.move();
   scarecrow.move();
+  walls();
 
   // Player movement
 
