@@ -10,10 +10,39 @@ let app = new PIXI.Application({
 
 document.body.appendChild(app.view);
 
+// add start game screen
+
+startScreen = new PIXI.Container();
+app.stage.addChild(startScreen);
+
+// add the background image startScreen
+
+let startImage = PIXI.Sprite.from('/sprites/background.svg');
+startImage.width = app.view.width;
+startImage.height = app.view.height;
+startImage.buttonMode = true;
+startImage.interactive = true;
+startImage.on('click', clickButton);
+startScreen.addChild(startImage);
+
+// add some text to the startScreen
+
+let startText = new PIXI.Text('Press anywhere to start the game');
+startText.x = 500;
+startText.y = 400;
+startText.anchor.set(0.5);
+startScreen.addChild(startText);
+
+// function to switch between startScreen and gameScreen
+function clickButton() {
+  startScreen.visible = false;
+  gameScreen.visible = true;
+}
+
 // add container game screen
 
 gameScreen = new PIXI.Container();
-gameScreen.visible = true;
+gameScreen.visible = false;
 app.stage.addChild(gameScreen);
 
 let gameRect = new PIXI.Graphics();
@@ -133,14 +162,14 @@ function walls() {
     }
   }
   // wall to the right
-  else if (tomato.x > 500 - tomato.width / 2 || tomato.x < tomato.width / 2) {
+  else if (tomato.x > 1000 - tomato.width / 2 || tomato.x < tomato.width / 2) {
     console.log('outside');
     if (keys['39']) {
       keys['39'] = null;
     }
   }
   // wall to the down
-  else if (tomato.y > 500 - tomato.height / 2 || tomato.x < tomato.height / 2) {
+  else if (tomato.y > 800 - tomato.height / 2 || tomato.x < tomato.height / 2) {
     console.log('outside');
     if (keys['40']) {
       keys['40'] = null;
