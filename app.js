@@ -14,7 +14,7 @@ document.body.appendChild(app.view);
 
 // add start game screen
 
-startScreen = new PIXI.Container();
+let startScreen = new PIXI.Container();
 app.stage.addChild(startScreen);
 
 // add the background image startScreen
@@ -73,7 +73,7 @@ function clickButton() {
 // add container game screen
 
 let gameScreen = new PIXI.Container();
-gameScreen.visible = true;
+gameScreen.visible = false;
 app.stage.addChild(gameScreen);
 
 let gameRect = new PIXI.Graphics();
