@@ -20,16 +20,35 @@ app.stage.addChild(startScreen);
 let startImage = PIXI.Sprite.from('/sprites/background.svg');
 startImage.width = app.view.width;
 startImage.height = app.view.height;
-startImage.buttonMode = true;
-startImage.interactive = true;
-startImage.on('click', clickButton);
+// startImage.buttonMode = true;
+// startImage.interactive = true;
+// startImage.on('click', clickButton);
 startScreen.addChild(startImage);
 
-// add some text to the startScreen
+// add start button to the startScreen
 
-let startText = new PIXI.Text('Press anywhere to start the game');
+let startButton = PIXI.Sprite.from('/sprites/startbutton.svg');
+startButton.anchor.set(0.5);
+startButton.x = app.view.width / 2;
+startButton.y = app.view.height / 2;
+startButton.buttonMode = true;
+startButton.interactive = true;
+startButton.on('click', clickButton);
+startScreen.addChild(startButton);
+
+let style = new PIXI.TextStyle({
+  fontFamily: '"Lucida Console", Monaco, monospace',
+  wordWrap: true,
+  wordWrapWidth: 300,
+  align: 'center',
+  lineHeight: 35,
+});
+let startText = new PIXI.Text(
+  'The tomato wants some water and sun! but psst..watch out for the moving enemies!',
+  style
+);
 startText.x = 500;
-startText.y = 400;
+startText.y = 200;
 startText.anchor.set(0.5);
 startScreen.addChild(startText);
 
@@ -142,34 +161,40 @@ function doneLoading() {
 function resetGame() {}
 
 // Function walls around game screen
-
 function walls() {
   // wall to the left
-  if (tomato.x < app.width - tomato.width / 2 || tomato.x < tomato.width / 2) {
+  if (tomato.x < 0 + tomato.width / 2 || tomato.x < tomato.width / 2) {
+    console.log(app.view.width);
     console.log('outside');
+    console.log(tomato.x);
     if (keys['37']) {
       keys['37'] = null;
     }
   }
   // wall to the top
-  else if (
-    tomato.y < app.height - tomato.height / 2 ||
-    tomato.y < tomato.height / 2
-  ) {
+  else if (tomato.y < 0 + tomato.height / 2 || tomato.y < tomato.height / 2) {
     console.log('outside');
     if (keys['38']) {
       keys['38'] = null;
     }
   }
   // wall to the right
-  else if (tomato.x > 1000 - tomato.width / 2 || tomato.x < tomato.width / 2) {
+  else if (
+    tomato.x > app.view.width - tomato.width / 2 ||
+    tomato.x < tomato.width / 2
+  ) {
     console.log('outside');
+    console.log(app.width);
+    console.log(tomato.x);
     if (keys['39']) {
       keys['39'] = null;
     }
   }
   // wall to the down
-  else if (tomato.y > 800 - tomato.height / 2 || tomato.x < tomato.height / 2) {
+  else if (
+    tomato.y > app.view.height - tomato.height / 2 ||
+    tomato.x < tomato.height / 2
+  ) {
     console.log('outside');
     if (keys['40']) {
       keys['40'] = null;
