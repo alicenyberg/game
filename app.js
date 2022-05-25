@@ -1,6 +1,8 @@
-// Canvas
+import Player from './classes/player.js';
+import Monster from './classes/monster.js';
+import Food from './classes/food.js';
 
-// detta vill vi ha i en klass istället?
+// Canvas
 
 // window.onload = function createCanvas() {
 let app = new PIXI.Application({
@@ -12,7 +14,7 @@ document.body.appendChild(app.view);
 
 // add container game screen
 
-gameScreen = new PIXI.Container();
+let gameScreen = new PIXI.Container();
 gameScreen.visible = true;
 app.stage.addChild(gameScreen);
 
@@ -31,12 +33,12 @@ gameScreen.addChild(backgroundImage);
 
 // game over container
 
-endScreen = new PIXI.Container();
+let endScreen = new PIXI.Container();
 endScreen.visible = false;
 app.stage.addChild(endScreen);
 
 let endRect = new PIXI.Graphics();
-endRect.beginFill(000000);
+endRect.beginFill('000000');
 endRect.drawRect(0, 0, app.view.width, app.view.height);
 endScreen.addChild(endRect);
 
@@ -83,7 +85,6 @@ function onClick() {
 
 // endScreen.addChild(button);
 
-// put in loader
 // get sprites
 
 app.loader.baseUrl = 'sprites';
@@ -110,23 +111,17 @@ function doneLoading() {
   app.ticker.add(gameLoop);
 }
 
-function resetGame() {}
-
 // Function walls around game screen
 
 function walls() {
   // wall to the left
   if (tomato.x < 0 + tomato.width / 2 || tomato.x < tomato.width / 2) {
-    console.log(app.view.width);
-    console.log('outside');
-    console.log(tomato.x);
     if (keys['37']) {
       keys['37'] = null;
     }
   }
   // wall to the top
   else if (tomato.y < 0 + tomato.height / 2 || tomato.y < tomato.height / 2) {
-    console.log('outside');
     if (keys['38']) {
       keys['38'] = null;
     }
@@ -136,9 +131,6 @@ function walls() {
     tomato.x > app.view.width - tomato.width / 2 ||
     tomato.x < tomato.width / 2
   ) {
-    console.log('outside');
-    console.log(app.width);
-    console.log(tomato.x);
     if (keys['39']) {
       keys['39'] = null;
     }
@@ -148,7 +140,6 @@ function walls() {
     tomato.y > app.view.height - tomato.height / 2 ||
     tomato.x < tomato.height / 2
   ) {
-    console.log('outside');
     if (keys['40']) {
       keys['40'] = null;
     }
@@ -177,6 +168,8 @@ function gameLoop() {
     tomato.y += 5;
   }
 
+  // check collison between player and monster/food
+
   if (collision(tomato, caterpillar)) {
     endScreen.visible = true;
     gameScreen.visible = false;
@@ -186,7 +179,7 @@ function gameLoop() {
     endScreen.visible = true;
     gameScreen.visible = false;
   }
-  if (collectPoints(tomato, raindrop)) {
+  if (collision(tomato, raindrop)) {
     gameScreen.removeChild(scoreBoard);
     score++;
     drawScore();
@@ -194,7 +187,7 @@ function gameLoop() {
     raindrop.x = Math.random() * app.screen.width;
     raindrop.y = Math.random() * app.screen.height;
   }
-  if (collectPoints(tomato, sun)) {
+  if (collision(tomato, sun)) {
     gameScreen.removeChild(scoreBoard);
     score++;
     drawScore();
@@ -204,37 +197,23 @@ function gameLoop() {
   }
 }
 
-// Collision function
+// Collision function, check if player interacts with food or enemies
 
 function collision(a, b) {
   let player = a.getBounds();
-  let enemy = b.getBounds();
+  let object = b.getBounds();
 
   return (
-    player.x + player.width > enemy.x &&
-    player.x < enemy.x + enemy.width &&
-    player.y + enemy.height > enemy.y &&
-    player.y < enemy.y + enemy.height
+    player.x + player.width > object.x &&
+    player.x < object.x + object.width &&
+    player.y + object.height > object.y &&
+    player.y < object.y + object.height
   );
 }
 
 // Player
 
 let tomato;
-
-// Player class
-
-class Player extends PIXI.Sprite {
-  constructor(x = 0, y = 0, width, height, texture, name = 'none') {
-    super(texture);
-    this.anchor.set(0.5);
-    this.name = name;
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-  }
-}
 // create player from class, and add to canvas
 function createPlayer() {
   tomato = new Player(
@@ -251,8 +230,6 @@ function createPlayer() {
   );
 
   // add player to canvas
-
-  // app.stage.addChild(tomato);
   gameScreen.addChild(tomato);
 }
 
@@ -270,35 +247,12 @@ let keys = {};
 window.addEventListener('keydown', keyDown);
 window.addEventListener('keyup', keyUp);
 
-// Monster
-
-let caterpillar;
-
-// Monster class
-
-class Monster extends PIXI.Sprite {
-  constructor(x = 0, y = 0, width, height, texture, name = 'none', speed = 5) {
-    super(texture);
-    this.anchor.set(0.5);
-    this.name = name;
-    this.speed = speed;
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-  }
-
-  // monster movement
-
-  move() {
-    this.x = this.x + this.speed;
-    if (this.x > app.view.width - this.width / 2 || this.x < this.width / 2) {
-      this.speed = -this.speed;
-    }
-  }
-}
+// Monsters
 
 // create monster from class, and add to canvas
+
+let scarecrow;
+let caterpillar;
 
 function createMonster() {
   caterpillar = new Monster(
@@ -313,7 +267,8 @@ function createMonster() {
     // name
     'Wormy',
     // speed
-    4.5
+    4.5,
+    app
   );
 
   scarecrow = new Monster(
@@ -323,26 +278,18 @@ function createMonster() {
     100,
     app.loader.resources['scarecrow'].texture,
     'scary',
-    4
+    4,
+    app
   );
 
   // add monster to canvas
-
   gameScreen.addChild(caterpillar, scarecrow);
 }
 
 // Food/points
 
-class Food extends PIXI.Sprite {
-  constructor(x = 0, y = 0, width, height, texture) {
-    super(texture);
-    this.anchor.set(0.5);
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-  }
-}
+let raindrop;
+let sun;
 
 function createFood() {
   raindrop = new Food(
@@ -366,7 +313,7 @@ function createFood() {
 
 // scoreboard
 
-let scoreboard;
+let scoreBoard;
 let score = 0;
 
 function drawScore() {
@@ -381,17 +328,3 @@ function drawScore() {
 }
 
 drawScore();
-
-// function to collect points
-
-function collectPoints(a, b) {
-  let player = a.getBounds();
-  let food = b.getBounds();
-
-  return (
-    player.x + player.width > food.x &&
-    player.x < food.x + food.width &&
-    player.y + food.height > food.y &&
-    player.y < food.y + food.height
-  );
-}
