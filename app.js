@@ -12,6 +12,64 @@ let app = new PIXI.Application({
 
 document.body.appendChild(app.view);
 
+// add start game screen
+
+startScreen = new PIXI.Container();
+app.stage.addChild(startScreen);
+
+// add the background image startScreen
+
+let startImage = PIXI.Sprite.from('/sprites/background.svg');
+startImage.width = app.view.width;
+startImage.height = app.view.height;
+startScreen.addChild(startImage);
+
+// add start button to the startScreen
+
+let startButton = PIXI.Sprite.from('/sprites/startbutton.svg');
+startButton.anchor.set(0.5);
+startButton.x = app.view.width / 2;
+startButton.y = app.view.height / 2;
+startButton.buttonMode = true;
+startButton.interactive = true;
+startButton.on('click', clickButton);
+startScreen.addChild(startButton);
+
+// instuctions on how to play
+let style = new PIXI.TextStyle({
+  fontFamily: '"Lucida Console", Monaco, monospace',
+  wordWrap: true,
+  wordWrapWidth: 300,
+  align: 'center',
+  lineHeight: 35,
+});
+
+let startText = new PIXI.Text(
+  'The tomato wants some water and sun! but psst..watch out for the moving enemies!',
+  style
+);
+startText.x = 350;
+startText.y = 80;
+startScreen.addChild(startText);
+
+let instructionText = new PIXI.Text('Move around with your arrow keys', style);
+instructionText.x = 375;
+instructionText.y = 580;
+startScreen.addChild(instructionText);
+
+let instructions = new PIXI.Sprite.from('/sprites/arrowkeys.svg');
+instructions.anchor.set(0.5);
+instructions.x = app.view.width / 2;
+instructions.y = app.view.height / 1.4;
+startScreen.addChild(instructions);
+
+// function to switch between startScreen and gameScreen
+
+function clickButton() {
+  startScreen.visible = false;
+  gameScreen.visible = true;
+}
+
 // add container game screen
 
 let gameScreen = new PIXI.Container();
@@ -41,25 +99,6 @@ let endRect = new PIXI.Graphics();
 endRect.beginFill('000000');
 endRect.drawRect(0, 0, app.view.width, app.view.height);
 endScreen.addChild(endRect);
-
-// let gameOverText = new PIXI.Text('Game Over');
-// gameOverText.anchor.set(0.5);
-// gameOverText.x = app.view.width / 3;
-// gameOverText.y = app.view.height / 5;
-// gameOverText.style = new PIXI.TextStyle({
-//   fontSize: 40,
-//   fontStyle: 'bold',
-//   color: '#FFFFFF',
-// });
-// endScreen.addChild(gameOverText);
-
-// play again text
-
-// let playAgainText = new PIXI.Text('Play Again?');
-// playAgainText.anchor.set(0.5);
-// playAgainText.x = app.view.width / 2;
-// playAgainText.y = app.view.height / 3;
-// endScreen.addChild(playAgainText);
 
 // play again button
 
