@@ -5,7 +5,7 @@
 // window.onload = function createCanvas() {
 let app = new PIXI.Application({
   width: 1000,
-  height: 800,
+  height: 720,
 });
 
 document.body.appendChild(app.view);
@@ -49,14 +49,13 @@ let startText = new PIXI.Text(
   'The tomato wants some water and sun! but psst..watch out for the moving enemies!',
   style
 );
-startText.x = 500;
-startText.y = 200;
-startText.anchor.set(0.5);
+startText.x = 350;
+startText.y = 90;
 startScreen.addChild(startText);
 
 let instructionText = new PIXI.Text('Move around with your arrow keys', style);
 instructionText.x = 375;
-instructionText.y = 650;
+instructionText.y = 580;
 startScreen.addChild(instructionText);
 
 let instructions = new PIXI.Sprite.from('/sprites/arrowkeys.svg');
