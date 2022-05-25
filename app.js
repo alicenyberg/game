@@ -5,7 +5,7 @@
 // window.onload = function createCanvas() {
 let app = new PIXI.Application({
   width: 1000,
-  height: 720,
+  height: 700,
 });
 
 document.body.appendChild(app.view);
@@ -20,9 +20,6 @@ app.stage.addChild(startScreen);
 let startImage = PIXI.Sprite.from('/sprites/background.svg');
 startImage.width = app.view.width;
 startImage.height = app.view.height;
-// startImage.buttonMode = true;
-// startImage.interactive = true;
-// startImage.on('click', clickButton);
 startScreen.addChild(startImage);
 
 // add start button to the startScreen
@@ -50,7 +47,7 @@ let startText = new PIXI.Text(
   style
 );
 startText.x = 350;
-startText.y = 90;
+startText.y = 80;
 startScreen.addChild(startText);
 
 let instructionText = new PIXI.Text('Move around with your arrow keys', style);
@@ -65,6 +62,7 @@ instructions.y = app.view.height / 1.4;
 startScreen.addChild(instructions);
 
 // function to switch between startScreen and gameScreen
+
 function clickButton() {
   startScreen.visible = false;
   gameScreen.visible = true;
@@ -99,25 +97,6 @@ let endRect = new PIXI.Graphics();
 endRect.beginFill(000000);
 endRect.drawRect(0, 0, app.view.width, app.view.height);
 endScreen.addChild(endRect);
-
-// let gameOverText = new PIXI.Text('Game Over');
-// gameOverText.anchor.set(0.5);
-// gameOverText.x = app.view.width / 3;
-// gameOverText.y = app.view.height / 5;
-// gameOverText.style = new PIXI.TextStyle({
-//   fontSize: 40,
-//   fontStyle: 'bold',
-//   color: '#FFFFFF',
-// });
-// endScreen.addChild(gameOverText);
-
-// play again text
-
-// let playAgainText = new PIXI.Text('Play Again?');
-// playAgainText.anchor.set(0.5);
-// playAgainText.x = app.view.width / 2;
-// playAgainText.y = app.view.height / 3;
-// endScreen.addChild(playAgainText);
 
 // play again button
 
