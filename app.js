@@ -222,7 +222,8 @@ function gameLoop() {
     gameScreen.removeChild(scoreBoard);
     score++;
     drawScore();
-    console.log(score);
+    tomato.scale.x *= 1.01;
+    tomato.scale.y *= 1.01;
     raindrop.x = Math.random() * app.screen.width;
     raindrop.y = Math.random() * app.screen.height;
   }
@@ -230,7 +231,8 @@ function gameLoop() {
     gameScreen.removeChild(scoreBoard);
     score++;
     drawScore();
-    console.log(score);
+    tomato.scale.x *= 1.01;
+    tomato.scale.y *= 1.01;
     sun.x = Math.random() * app.screen.width;
     sun.y = Math.random() * app.screen.height;
   }
