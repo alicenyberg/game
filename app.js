@@ -45,16 +45,18 @@ let style = new PIXI.TextStyle({
 });
 
 let startText = new PIXI.Text(
-  'The tomato wants some water and sun! but psst..watch out for the moving enemies!',
+  'The tomato needs water and sun to grow! But psst..watch out for the moving enemies!',
   style
 );
-startText.x = 350;
-startText.y = 80;
+startText.anchor.set(0.5);
+startText.x = app.view.width / 2;
+startText.y = 190;
 startScreen.addChild(startText);
 
 let instructionText = new PIXI.Text('Move around with your arrow keys', style);
-instructionText.x = 375;
-instructionText.y = 580;
+instructionText.anchor.set(0.5);
+instructionText.x = app.view.width / 2;
+instructionText.y = 680;
 startScreen.addChild(instructionText);
 
 let instructions = new PIXI.Sprite.from('/sprites/arrowkeys.svg');
@@ -133,7 +135,8 @@ app.loader
   .add('raindrop', 'raindrop.svg')
   .add('sun', 'sun.svg')
   .add('scarecrow', 'scarecrow.svg')
-  .add('tomat', 'mini-tomato.svg');
+  .add('tomat', 'mini-tomato.svg')
+  .add('sound', 'silly-intro.mp3');
 
 //  check if everything is done loading
 
@@ -220,8 +223,11 @@ function gameLoop() {
   }
   if (collision(tomato, raindrop)) {
     gameScreen.removeChild(scoreBoard);
+    endScreen.removeChild(endScoreBoard);
     score++;
     drawScore();
+    endScore++;
+    endDrawScore();
     tomato.scale.x *= 1.01;
     tomato.scale.y *= 1.01;
     raindrop.x = Math.random() * app.screen.width;
@@ -229,7 +235,10 @@ function gameLoop() {
   }
   if (collision(tomato, sun)) {
     gameScreen.removeChild(scoreBoard);
+    endScreen.removeChild(endScoreBoard);
     score++;
+    endScore++;
+    endDrawScore();
     drawScore();
     tomato.scale.x *= 1.01;
     tomato.scale.y *= 1.01;
@@ -259,8 +268,8 @@ let tomato;
 function createPlayer() {
   tomato = new Player(
     // players position on the canvas
-    250,
-    250,
+    500,
+    400,
     // player size
     120,
     120,
@@ -298,8 +307,8 @@ let caterpillar;
 function createMonster() {
   caterpillar = new Monster(
     // placement on the canvas
-    100,
-    100,
+    500,
+    200,
     // size of the monster
     150,
     100,
@@ -313,8 +322,8 @@ function createMonster() {
   );
 
   scarecrow = new Monster(
-    400,
-    400,
+    500,
+    600,
     130,
     100,
     app.loader.resources['scarecrow'].texture,
@@ -360,12 +369,41 @@ let score = 0;
 function drawScore() {
   const style = new PIXI.TextStyle({
     fontFamily: 'Roboto',
-    fill: ['#000000'],
-    fontSize: 43,
+    fill: ['#ffffff'],
+    fontSize: 50,
+    fontWeight: 'bold',
   });
 
   scoreBoard = new PIXI.Text(score, style);
+  scoreBoard.x = 10;
   gameScreen.addChild(scoreBoard);
 }
 
 drawScore();
+
+// add score to end-screen
+
+let endScoreBoard;
+let endScore = 0;
+
+const scoreText = new PIXI.Text('Your Score:', style);
+scoreText.anchor.set(0.5);
+scoreText.x = app.view.width / 2;
+scoreText.y = 130;
+endScreen.addChild(scoreText);
+
+function endDrawScore() {
+  const style = new PIXI.TextStyle({
+    fontFamily: 'Roboto',
+    fill: ['#000000'],
+    fontSize: 43,
+  });
+
+  endScoreBoard = new PIXI.Text(endScore, style);
+  endScoreBoard.anchor.set(0.5);
+  endScoreBoard.x = app.view.width / 2;
+  endScoreBoard.y = 170;
+  endScreen.addChild(endScoreBoard);
+}
+
+endDrawScore();
