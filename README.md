@@ -2,15 +2,20 @@ INSERT MANDATORY GIF
 
 # Tomato run!
 
-A small game built with PixiJS. Check out the game [https://tomatorun.netlify.app/](here)!
+A small game built with PixiJS. Check out the game [here](https://tomatorun.netlify.app/)!
 
 # Installation
 
-Add the installation instructions.
+1. Download repository
+2. Open in editor (visual studio code)
+3. Run npm install in terminal
+4. Open live server
+5. Enjoy
 
 # Changelog
 
--   [#1 - Add a link to each pull request with a descriptive line.](#1)
+-   [#1 - Set up boilerplate]()
+
 
 # Code Review
 
