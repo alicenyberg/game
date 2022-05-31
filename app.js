@@ -9,6 +9,9 @@ let app = new PIXI.Application({
   width: 1000,
   height: 800,
 });
+// Sound
+
+PIXI.sound.add('sound', './sprites/silly-intro.mp3');
 
 document.body.appendChild(app.view);
 
@@ -135,8 +138,7 @@ app.loader
   .add('raindrop', 'raindrop.svg')
   .add('sun', 'sun.svg')
   .add('scarecrow', 'scarecrow.svg')
-  .add('tomat', 'mini-tomato.svg')
-  .add('sound', 'silly-intro.mp3');
+  .add('tomat', 'mini-tomato.svg');
 
 //  check if everything is done loading
 
@@ -151,6 +153,7 @@ function doneLoading() {
   createPlayer();
   createFood();
   app.ticker.add(gameLoop);
+  PIXI.sound.play('sound');
 }
 
 // Function walls around game screen
