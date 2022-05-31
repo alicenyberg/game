@@ -3,5 +3,6 @@
   "dependencies": {
     "@pixi/sound": "^4.2.0",
     "pixi.js": "^6.3.2"
-  }
+  },
+  "type": "module"
 }
