@@ -4,11 +4,13 @@ import Monster from './classes/monster.js';
 import Food from './classes/food.js';
 // Canvas
 
-// window.onload = function createCanvas() {
 let app = new PIXI.Application({
   width: 1000,
   height: 800,
 });
+
+// Sound
+PIXI.sound.add('sound', './sprites/sound.mp3');
 
 document.body.appendChild(app.view);
 
@@ -36,6 +38,7 @@ startButton.on('click', clickButton);
 startScreen.addChild(startButton);
 
 // instuctions on how to play
+
 let style = new PIXI.TextStyle({
   fontFamily: '"Lucida Console", Monaco, monospace',
   wordWrap: true,
@@ -70,6 +73,7 @@ startScreen.addChild(instructions);
 function clickButton() {
   startScreen.visible = false;
   gameScreen.visible = true;
+  PIXI.sound.play('sound');
 }
 
 // add container game screen
@@ -124,8 +128,6 @@ function onClick() {
   location.reload();
 }
 
-// endScreen.addChild(button);
-
 // get sprites
 
 app.loader.baseUrl = 'sprites';
@@ -134,15 +136,12 @@ app.loader
   .add('caterpillar', 'caterpillar.svg')
   .add('raindrop', 'raindrop.svg')
   .add('sun', 'sun.svg')
-  .add('scarecrow', 'scarecrow.svg')
-  .add('tomat', 'mini-tomato.svg')
-  .add('sound', 'silly-intro.mp3');
+  .add('bird', 'bird.svg');
 
 //  check if everything is done loading
 
 app.loader.onComplete.add(doneLoading);
 app.loader.load();
-// };
 
 // When everything is done loading, start game (more or less)
 
@@ -192,7 +191,7 @@ function walls() {
 
 function gameLoop() {
   caterpillar.move();
-  scarecrow.move();
+  bird.move();
   walls();
 
   // Player movement
@@ -217,7 +216,7 @@ function gameLoop() {
     gameScreen.visible = false;
   }
 
-  if (collision(tomato, scarecrow)) {
+  if (collision(tomato, bird)) {
     endScreen.visible = true;
     gameScreen.visible = false;
   }
@@ -301,7 +300,7 @@ window.addEventListener('keyup', keyUp);
 
 // create monster from class, and add to canvas
 
-let scarecrow;
+let bird;
 let caterpillar;
 
 function createMonster() {
@@ -321,19 +320,19 @@ function createMonster() {
     app
   );
 
-  scarecrow = new Monster(
+  bird = new Monster(
     500,
     600,
     130,
     100,
-    app.loader.resources['scarecrow'].texture,
+    app.loader.resources['bird'].texture,
     'scary',
     4,
     app
   );
 
   // add monster to canvas
-  gameScreen.addChild(caterpillar, scarecrow);
+  gameScreen.addChild(caterpillar, bird);
 }
 
 // Food/points
