@@ -1,8 +1,8 @@
 INSERT MANDATORY GIF
 
-# Project Title
+# Tomato run!
 
-Text about the project and which JavaScript library you're using. This would also be a great place to link the game on Netlify.
+A small game built with PixiJS. Check out the game [https://tomatorun.netlify.app/](here)!
 
 # Installation
 
