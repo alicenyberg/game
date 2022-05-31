@@ -1,7 +1,7 @@
+// import * as PIXI from 'pixi.js';
 import Player from './classes/player.js';
 import Monster from './classes/monster.js';
 import Food from './classes/food.js';
-
 // Canvas
 
 let app = new PIXI.Application({
