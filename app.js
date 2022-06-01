@@ -10,7 +10,7 @@ let app = new PIXI.Application({
 });
 
 // Sound
-PIXI.sound.add('sound', './sprites/sound.mp3');
+PIXI.sound.add('sound', './sprites/sound2.mp3');
 
 document.body.appendChild(app.view);
 
